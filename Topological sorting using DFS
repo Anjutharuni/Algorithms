@@ -1,0 +1,45 @@
+#include<stdio.h>
+#define max 100
+void TopologicalSort(int vertices , int adj[max][max])
+{
+    int visited[max]={0};
+    int stack[max],top=-1;
+    for(int i=0;i<vertices;i++)
+    {
+        if(!visited[i])
+            dfs(i,vertices, adj,visited,stack,&top);
+
+    }
+    printf("Topological sorting:");
+    while(top!=-1)
+    {
+        printf("%d ",stack[top--]);
+    }
+}
+void dfs(int v, int vertices, int adj[max][max], int visited[max], int stack[max], int *top)
+{
+    visited[v]=1;
+    for(int j=0;j<vertices;j++)
+    {
+        if(adj[v][j]==1 && !visited[j])
+            dfs(j,vertices,adj,visited,stack,top);
+    }
+
+    stack[++(*top)]=v;
+}
+
+int main()
+{
+    int adj[max][max],vertices;
+    printf("Enter the number of vertices: ");
+    scanf("%d",&vertices);
+    printf("Enter the adjacent matrix:\n");
+    for(int i=0;i<vertices;i++)
+    {
+        for(int j=0;j<vertices;j++)
+        {
+            scanf("%d",&adj[i][j]);
+        }
+    }
+    TopologicalSort(vertices,adj);
+}
