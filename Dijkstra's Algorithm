@@ -1,0 +1,58 @@
+#include <stdio.h>
+
+#define INF 999
+
+void dijkstra(int n, int cost[10][10], int src) {
+    int i, j, u, dis[10], vis[10], min;
+
+    for (i = 1; i <= n; i++) {
+        dis[i] = cost[src][i];
+        vis[i] = 0;
+    }
+
+    vis[src] = 1;
+
+    for (i = 1; i <= n - 1; i++) {
+        min = INF;
+        for (j = 1; j <= n; j++) {
+            if (!vis[j] && dis[j] < min) {
+                min = dis[j];
+                u = j;
+            }
+        }
+
+        vis[u] = 1;
+
+        for (j = 1; j <= n; j++) {
+            if (!vis[j] && dis[u] + cost[u][j] < dis[j]) {
+                dis[j] = dis[u] + cost[u][j];
+            }
+        }
+    }
+
+    printf("Shortest paths from source vertex %d:\n", src);
+    for (i = 1; i <= n; i++) {
+        printf("%d -> %d = %d\n", src, i, dis[i]);
+    }
+}
+
+int main() {
+    int cost[10][10], n, i, j, src;
+
+    printf("Enter the number of vertices: ");
+    scanf("%d", &n);
+
+    printf("Enter the cost adjacency matrix (use %d for INF):\n", INF);
+    for (i = 1; i <= n; i++) {
+        for (j = 1; j <= n; j++) {
+            scanf("%d", &cost[i][j]);
+        }
+    }
+
+    printf("Enter the source vertex: ");
+    scanf("%d", &src);
+
+    dijkstra(n, cost, src);
+
+    return 0;
+}
